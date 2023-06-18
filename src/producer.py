@@ -1,11 +1,14 @@
 
+import argparse
 import uuid
 from datetime import datetime
+import random
 
 from confluent_kafka import Producer
 from confluent_kafka.serialization import StringSerializer, SerializationContext, MessageField
 from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka.schema_registry.avro import AvroSerializer
+import pycountry
 
 from transaction import Transaction, transaction_to_dict
 
@@ -23,21 +26,24 @@ PRODUCER = Producer(PRODUCER_CONF)
 TOPIC = "transaction"
 
 
-def produce_events():
-    transaction = Transaction(dict(event_id=str(uuid.uuid4()), timestamp=str(datetime.timestamp(datetime.now()))),
-                              dict(consumer_id=str(uuid.uuid4()),
-                                   bank_id=str(uuid.uuid4()),
-                                   amount=1.0,
-                                   country_code="FR",
-                                   execution_date=datetime.now().isoformat(),
-                                   merchant_id=str(uuid.uuid4()))
-                              )
-    PRODUCER.produce(topic=TOPIC,
-                     key=STRING_SERIALIZER(str(uuid.uuid4())),
-                     value=AVRO_SERIALISER(transaction, SerializationContext(
-                         TOPIC, MessageField.VALUE)),
-                     on_delivery=delivery_report)
-    PRODUCER.flush()
+def produce_events(number_of_events: int):
+    country_codes = list(pycountry.countries)
+    for _ in range(0, number_of_events):
+        country = random.choice(country_codes)
+        transaction = Transaction(dict(event_id=str(uuid.uuid4()), timestamp=str(datetime.timestamp(datetime.now()))),
+                                    dict(consumer_id=str(uuid.uuid4()),
+                                        bank_id=str(uuid.uuid4()),
+                                        amount=round(random.uniform(1, 1000), 2),
+                                        country_code=country.alpha_2,
+                                        execution_date=datetime.now().isoformat(),
+                                        merchant_id=str(uuid.uuid4()))
+                                    )
+        PRODUCER.produce(topic=TOPIC,
+                            key=STRING_SERIALIZER(str(uuid.uuid4())),
+                            value=AVRO_SERIALISER(transaction, SerializationContext(
+                                TOPIC, MessageField.VALUE)),
+                            on_delivery=delivery_report)
+        PRODUCER.flush()
 
 
 def delivery_report(err, msg):
@@ -66,4 +72,7 @@ def delivery_report(err, msg):
 
 
 if __name__ == "__main__":
-    produce_events()
+    parser = argparse.ArgumentParser(description="'Transaction event producer'")
+    parser.add_argument('-n', '--number-of-events', type=int, default=1, help="Number of events")
+    args = parser.parse_args()
+    produce_events(args.number_of_events)
