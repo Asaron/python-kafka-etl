@@ -1,0 +1,61 @@
+{
+    "namespace": "com.company.event.Transaction",
+    "type": "record",
+    "name": "Transaction",
+    "fields": [
+        {
+            "name": "metadata",
+            "type": {
+                "type": "record",
+                "name": "TransactionMetadata",
+                "namespace": "com.company.event.TransactionMetadata",
+                "fields": [
+                    {
+                        "name": "event_id",
+                        "type": "string"
+                    },
+                    {
+                        "name": "timestamp",
+                        "type": "string"
+                    }
+                ]
+                
+            }
+        },
+        {
+            "name": "payload",
+            "type": {
+                "type": "record",
+                "name": "TransactionPayload",
+                "namespace": "com.company.event.TransactionPayload",
+                "fields": [
+                    {
+                        "name": "consumer_id",
+                        "type": "string"
+                    },
+                    {
+                        "name": "bank_id",
+                        "type": "string"
+                    },
+                    {
+                        "name": "amount",
+                        "type": "float"
+                    },
+                    {
+                        "name": "country_code",
+                        "type": "string"
+                    },
+                    {
+                        "name": "execution_date",
+                        "type": "string"
+                    },
+                    {
+                        "name": "merchant_id",
+                        "type": "string"
+                    }
+                ]
+
+            }
+        }
+    ]
+}
