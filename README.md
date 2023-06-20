@@ -36,3 +36,9 @@ Activate Pyenv:
 ```bash
 pyenv shell kafka-python
 ```
+
+## Clickhouse
+Enter Clickhouse:
+```bash
+docker exec -it clickhouse-server clickhouse-client
+'''

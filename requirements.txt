@@ -4,3 +4,4 @@ fastavro==1.7.4
 avro==1.11.1
 Faker==18.10.1
 pycountry==22.3.5
+clickhouse-connect==0.6.3
