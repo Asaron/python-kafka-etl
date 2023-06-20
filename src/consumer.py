@@ -3,6 +3,8 @@ from confluent_kafka import Consumer
 from clikhouse_sink import ClickhouseSink
 from deserializer import Deserializer
 
+from datetime import datetime
+
 CONSUMER_CONF = {'bootstrap.servers': "localhost:9092",
                  'group.id': "default",
                  'auto.offset.reset': "earliest"}
@@ -35,7 +37,7 @@ def consume_events():
 def create_data_structure(transaction):
     return [
         str(transaction.metadata.event_id),
-        str(transaction.metadata.timestamp),
+        datetime.fromtimestamp(float(transaction.metadata.timestamp)),
         str(transaction.payload.consumer_id),
         str(transaction.payload.bank_id),
         transaction.payload.amount,
