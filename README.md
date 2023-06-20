@@ -23,7 +23,7 @@ Create a new Avro schema file in `event/`
 
 Then, to send schema to Schema Registry:
 ```bash
-sh utils/send_schema_to_schema_registry.sh schema-name
+sh utils/send_schema_to_schema_registry.sh transaction
 ```
 
 ## Clickhouse
