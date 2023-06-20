@@ -26,6 +26,29 @@ Then, to send schema to Schema Registry:
 sh utils/send_schema_to_schema_registry.sh schema-name
 ```
 
+## Clickhouse
+Enter Clickhouse:
+```bash
+docker exec -it clickhouse-server clickhouse-client
+```
+
+Create a new table;
+```sql
+CREATE TABLE IF NOT EXISTS transaction
+(
+    event_id String,
+    timestamp String,
+    consumer_id String,
+    bank_id String,
+    amount Float64,
+    country_code String,
+    execution_date String,
+    merchant_id String
+) ENGINE = MergeTree()
+ORDER BY event_id
+PRIMARY KEY event_id
+```
+
 ### Python
 Create a python environment with Pyenv:
 ```bash
@@ -37,8 +60,13 @@ Activate Pyenv:
 pyenv shell kafka-python
 ```
 
-## Clickhouse
-Enter Clickhouse:
+Start consuming:
 ```bash
-docker exec -it clickhouse-server clickhouse-client
-'''
+python src/consumer.py
+```
+
+Producing events:
+```bash
+python src/producer.py --number-of-events 5
+```
+
