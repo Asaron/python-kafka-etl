@@ -1,5 +1,9 @@
 # python-kafka-etl
 
+## Architecture
+
+![architecture](images/architecture.png)
+
 ## Installation
 
 ### Kafka 
