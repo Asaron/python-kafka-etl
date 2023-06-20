@@ -60,6 +60,11 @@ Activate Pyenv:
 pyenv shell kafka-python
 ```
 
+Install requirements:
+```bash
+pip install -r requirements.txt
+```
+
 Start consuming:
 ```bash
 python src/consumer.py
