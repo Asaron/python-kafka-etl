@@ -1,7 +1,7 @@
-CREATE TABLE IF NOT EXISTS transaction
+CREATE OR REPLACE TABLE transaction
 (
     event_id String,
-    timestamp String,
+    timestamp DateTime,
     consumer_id String,
     bank_id String,
     amount Float64,
@@ -11,4 +11,4 @@ CREATE TABLE IF NOT EXISTS transaction
 ) ENGINE = MergeTree()
 ORDER BY event_id
 PRIMARY KEY event_id
-{# TTL timestamp + INTERVAL 60 DAY #}
+TTL timestamp + INTERVAL 60 DAY;

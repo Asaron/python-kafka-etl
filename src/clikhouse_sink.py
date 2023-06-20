@@ -6,7 +6,6 @@ class ClickhouseSink:
 
     @staticmethod
     def insert_rows(table: str, data: object):
-        print(f"data: {data}")
         CLIENT.insert(table, [data], column_names=[
             "event_id",
             "timestamp",
