@@ -51,7 +51,7 @@ CREATE OR REPLACE TABLE transaction
 ) ENGINE = MergeTree()
 ORDER BY event_id
 PRIMARY KEY event_id
-TTL timestamp + INTERVAL 60 DAY;
+TTL timestamp + INTERVAL 2 YEAR;
 ```
 
 ### Python
